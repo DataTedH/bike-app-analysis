@@ -31,11 +31,11 @@ def create_table(query_file: str, conn):
     conn.commit()
 
 
-def insert_data_to_db(conn, df, table_name: str, col_names: list[str]):
+def insert_data_to_db(conn, df, table_name):
     with conn.cursor() as cursor:
         for index, row in df.iterrows():
-            query = f"INSERT INTO {table_name} VALUES ({', '.join(['%s']*len(col_names))})"
-            values = tuple(row[column] for column in col_names)
+            query = f"INSERT INTO {table_name} VALUES ({', '.join(['%s']*len(row))})"
+            values = tuple(row)
             cursor.execute(query, values)
 
     conn.commit()
@@ -68,3 +68,5 @@ def load_query_df(query_file: str, conn, col_names: list[str]):
 
     # Return the DataFrame
     return df
+
+#%%
